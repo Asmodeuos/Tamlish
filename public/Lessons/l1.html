@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1</title>
+    <link rel="icon" type="image/png" href="../Images/favicon.png">
+    <link rel="stylesheet" href="lessonTheme.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+</head>
+
+<body>
+    <main>
+        <a href="lessons.html"><span class="material-symbols-outlined exitBtn">close</span></a>
+
+        <div class="choose_picture lessonSection">
+            pick the correct picture <br>
+            <img type="image/png" src="../Images/img1.png" alt="" class="imgs" id="img1">
+            <img type="image/png" src="../Images/img2.jpg" alt="" class="imgs" id="img2"><br>
+            <img type="image/png" src="../Images/img3.png" alt="" class="imgs" id="img3">
+            <img type="image/png" src="../Images/img4.png" alt="" class="imgs" id="img4">
+        </div>
+
+        <div class="choose_heard_word lessonSection">
+            Pick correct word that you hear <br>
+            <div class="heardWords" id="heardWord1">Word 1</div>
+            <div class="heardWords" id="heardWord2">Word 2</div>
+            <div class="heardWords" id="heardWord3">Word 3</div>
+            <div class="heardWords" id="heardWord4">Word 4</div>
+        </div>
+
+        <div class="write_EnglishWord lessonSection">
+            type the word in english <br>
+            <div class="TamlishWordToType"></div>
+            <input class="EnglishTypedWord" type="text" autocomplete="off">
+        </div>
+
+        <button class="checkBtn">Check</button>
+        <button class="nextSectionBtn">Next</button>
+
+        <div class="lesson_end lessonSection">
+            end of lesson
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/fuzzyset@1.0.7/dist/fuzzyset.min.js"></script>
+    <script src="lessonFunctions.js" type="module"></script>
+    <script src="l1.js" type="module"></script>
+
+</body>
+
+</html>

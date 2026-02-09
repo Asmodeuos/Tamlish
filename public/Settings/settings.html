@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="../themeStyle.css">
+    <link rel="stylesheet" href="settingsStyle.css">
+    <link rel="icon" type="image/png" href="../Images/favicon.png">
+</head>
+
+<body>
+    <div id="loginpg">
+        <div id="loginPgUI">
+            <span class="material-symbols-outlined" id="LIexitBtn">close</span>
+            <h3>Sign In</h3><br><br>
+            <label for="sign-in-email">Email:</label>
+            <input type="email" placeholder="adityazisserman@gmail.com" id="sign-in-email" minlength="6" required><br>
+            <label for="sign-in-password">Password:</label>
+            <input type="password" id="sign-in-password" minlength="6" required><br><br>
+            <button id="login">Log In</button><br><br>
+            <button class="googleLoginBtn">Sign in with Google</button><br><br>
+            <button id="signupBtn">Sign Up</button>
+            <br><br>
+            <h3 id="errorPage1"></h3>
+        </div>
+    </div>
+    <div id="signuppg">
+        <div id="signupPgUI">
+            <span class="material-symbols-outlined" id="SUexitBtn">close</span>
+            <h3>Sign Up</h3><br><br>
+            <label for="sign-up-email">Email:</label>
+            <input type="email" placeholder="adityazisserman@gmail.com" id="sign-up-email" minlength="6" required><br>
+            <label for="sign-up-password">Password:</label>
+            <input type="password" id="sign-up-password" minlength="6" required><br><br>
+            <button id="signUp">Sign Up</button><br><br>
+            <button class="googleLoginBtn">Sign up with Google</button>
+            <br><br>
+            <h3 id="errorPage2"></h3>
+        </div>
+    </div>
+    <header>
+        <nav class="navbar">
+            <ul id="logo">
+                <li>
+                    <img src="../Images/favicon.png" width="20px" height="20px" id="icon">
+                    <a href="index.html">TAMLISH</a>
+                </li>
+            </ul>
+            <ul id="utilities">
+                <li><a href="../Lessons/lessons.html" id="lessonsBtn">Lessons</a></li>
+                <li><a href="../Dictionary/dictionary.html" id="dictionaryBtn">Dictionary</a></li>
+                <li><a href="../Settings/settings.html" id="settingsBtn">Settings</a></li>
+                <li><a id="loginBtn">Sign in</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <br>
+        <label for="passwordReset">Reset Password</label>
+        <input id="passwordReset"><br><br>
+        <label for="usenameChange">Change Username</label>
+        <input id="usenameChange"><br><br>
+        <label for="emailChange">Change Email</label>
+        <input id="emailChange"><br><br>
+        <label for="themeSwitch">Switch Theme</label>
+        <input id="themeSwitch">
+    </main>
+
+    <footer id="footer">
+        <br>
+        <a>© Aditya Zisserman</a><br><br>
+        <a>Tamlish™</a>
+        <img src="../Images/favicon.png" id="icon1" alt="Tamlish Logo">
+        <img src="../Images/Primary_Horizontal_Lockup_Full_Color.png" id="firebaseLogo" alt="Firebase Logo">
+    </footer>
+
+
+    <script src="../index.js" type="module"></script>
+
+</body>
+
+</html>

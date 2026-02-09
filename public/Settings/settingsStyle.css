@@ -1,0 +1,14 @@
+.navbar #utilities #settingsBtn{
+    text-decoration: underline;
+    text-decoration-color: rgb(0, 104, 249);
+    color: rgb(0, 104, 249);
+}
+.navbar #utilities #settingsBtn:hover{
+    text-decoration: none;
+    background-color: rgb(117, 165, 249);
+    color: white;
+    box-shadow: 2px 5px rgb(88, 133, 230);
+}
+main{
+    color: black;
+}

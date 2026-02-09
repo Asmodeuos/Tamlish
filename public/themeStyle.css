@@ -1,0 +1,482 @@
+*{
+    box-sizing: border-box;
+
+}
+body{
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+html{
+    margin-bottom: 0px;
+    padding: 0px;
+    max-height: 100%;
+}
+main{
+    flex: 1;
+    color: white;
+}
+button{
+    cursor: pointer;
+}
+
+
+/* Navigation Bar */
+
+header{
+    position: sticky;
+    top: 0px;
+    font-family: Verdana;
+    font-size: 15px;
+    overflow: visible;
+    height: 60px;
+    box-shadow: 0.5px 2px 2px rgb(122, 164, 255);
+    background-color: #DEECF5;
+    z-index: 1;
+}
+.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar #utilities{
+    list-style-type: none;
+    display: flex;
+    gap: 40px;
+    margin-right: 8px;
+}
+.navbar #utilities a{
+    text-decoration: none;
+    padding: 10px;
+    color: blue;
+    border-radius: 12px;
+    top:0;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+.navbar #logo{
+    list-style-type: none;
+    padding-left: 30px;
+}
+.navbar #logo a{
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+    font-size: 18px;
+}
+.navbar #logo:hover{
+    transition: all 0.2s ease-in-out;
+    transform: scale(1.1);
+
+}
+
+.navbar #utilities a:hover{
+    background-color: rgb(56, 129, 255);
+    color: white;
+    box-shadow: 2px 5px rgb(29, 97, 243);
+} 
+
+.navbar #utilities a:active{
+    top: 3px;
+    box-shadow: 2px 2px rgb(29, 97, 243);
+   
+} 
+#icon{
+    transform: translateY(3px);
+}
+
+#wrapper{
+    min-width: 18ch;
+    text-align: center;
+    margin-right: 0;
+}
+#wrapper1{
+    min-width: 18ch;
+    text-align: center;
+    margin-right: 0;
+    position: relative;
+    display: inline-block;    
+    vertical-align: middle;
+}
+#statsGUI{
+    height: 300px;
+    width: 200px;
+    background-color: white;
+    border-radius: 15px;
+    position: absolute;
+    display: none;
+    top: 42px;
+    left: -24px;
+}
+#pointer{
+    cursor: pointer;
+}
+#statsexitBtn{
+    cursor: pointer;
+}
+.navbar #utilities #loginBtn{
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.navbar #utilities #displayNameBtn{
+    color: green;
+    pointer-events: none;
+    cursor: pointer;
+}
+
+.navbar #utilities #displayNameBtn:hover{
+    background-color: #DEECF5;
+    box-shadow: none;
+}
+
+.navbar #utilities #displayNameBtn:active{
+    top: 0px;
+    box-shadow: 0px 0px black;
+}
+
+
+/* Login Page */
+
+#loginpg{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 2;
+    backdrop-filter: blur(11px);
+    text-align: center;
+}
+
+#loginPgUI{
+    background-color: white;
+    height: 90vh;
+    width: 60vh;
+    border-radius: 30px;
+    padding: 15px;
+    padding-top: 5px;
+    width: fit-content;
+    text-align: center;
+    position: relative;
+}
+
+#loginPgUI input{
+    width: 300px;
+}
+#loginPgUI h3{
+    display: inline-block;
+    width: fit-content;
+}
+
+#loginPgUI #LIexitBtn{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 20px;
+    transform: scale(1.4);
+    cursor: pointer;
+}
+
+#signupPgUI #SUexitBtn{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 20px;
+    transform: scale(1.4);
+    cursor: pointer;
+}
+
+#signuppg{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 2;
+    backdrop-filter: blur(11px);
+    text-align: center;
+}
+#signupPgUI{
+    background-color: white;
+    height: 90vh;
+    width: 60vh;
+    border-radius: 30px;
+    padding: 15px;
+    padding-top: 5px;
+    width: fit-content;
+    text-align: center;
+    position: relative;
+}
+#signupPgUI input{
+    width: 300px;
+}
+
+#errorPage1, #errorPage2{
+    font-size: small;
+    color: red;
+}
+
+/* Banner */
+
+#banner{
+    text-align: center;
+    padding: auto;
+    padding: 90px;
+    font-size: 80px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: blue;
+    text-shadow: 2px 3px 2px lightblue;
+    position: relative;
+}
+#banner #tamil{
+    animation-name: tamilMover;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+    position: absolute;
+    left: 0;
+    visibility: hidden;
+}
+#banner #english{
+    animation-name: englishMover;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+    position: absolute;
+    right: 0;;
+    visibility: hidden;
+}
+#banner #tamlish{
+    animation-name: hideShow;
+    animation-duration: 2.5s;
+    animation-iteration-count: 1;
+}
+#banner #slogan{
+    animation-name: hideShow;
+    animation-duration: 2.5s;
+    animation-iteration-count: 1;
+    font-size: 25px;
+    text-shadow: 1px 2px 1px blue;
+    color: white;
+}
+@keyframes tamilMover {
+    0% {
+        opacity: 1; 
+        visibility: visible;
+    }
+    100% {
+        transform: translateX(40vw);
+        opacity: 0;
+        visibility: hidden; 
+    }
+}
+@keyframes englishMover {
+    0% {
+        opacity: 1; 
+        visibility: visible;
+    }
+    100% {
+        transform: translateX(-40vw); 
+        opacity: 0; 
+        visibility: hidden; 
+    }
+}
+@keyframes hideShow {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    90%{
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.animated-bg {
+    width: 100%;
+    height: 300px;
+    background: radial-gradient(circle,  #43a3df, #3340f3);
+    background-size: 150% 150%;
+    animation: pulseRadial 3s ease-in-out infinite; 
+    will-change: background-size;
+    overflow: hidden;
+}
+
+@keyframes pulseRadial {
+    0%, 100% {
+        background-size: 150% 150%; 
+    }
+    50% {
+        background-size: 100% 100%;
+    }
+}
+
+/* Main */
+
+.title{
+    font-size: 18px;
+    font-weight: bold;
+}
+#overview{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #3968EA;
+    padding: 50px;
+    text-align: center;
+    border-top: 0.1px solid blue;
+}
+#overview p{
+    padding: 12px;
+    width: 900px;
+}
+#features{
+    background-color: #0165F9;
+    padding: 50px;
+    font-size: 15px;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    flex-wrap: wrap;
+}
+#features #lsns{
+    padding: 20px;
+    width: 50%;
+}
+#features #activs{
+    padding: 20px;
+    width: 50%;
+}
+#features #accessibility{
+    padding: 20px;
+    width: 50%;
+}
+#features #exposure{
+    padding: 20px;
+    width: 50%;
+}
+#subheading{
+    background-color: gold;
+    width: 100%;
+    text-align: center;
+}
+
+#conversation{
+    display: flex;
+    flex-direction: row;
+    gap: 300px;
+    padding: 0px;
+    height: 400px;
+    color: blue;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+#conversation a{
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+}
+#localBubble{
+    width: 250px;
+    height: 180px;
+    align-self: end;
+    margin-right: 150px;
+    margin-bottom: 30px;
+    background-color: red;
+    animation-name: growLocal;
+    animation-duration: 4s;
+}
+#touristBubble{
+    align-self: start;
+    transform: scaleX(-1);
+    margin-top: 50px;
+    margin-left: 120px;
+    background-color: black;
+    animation-name: growTourist;
+    animation-duration: 2s;
+}
+#touristText{
+    position: absolute;
+    background-color: green;
+    height: 100px;
+    width: 200px;
+    transform: translate(-290px,-70px);
+}
+#localText{
+    position: absolute;
+    background-color: green;
+    height: 100px;
+    width: 200px;
+    transform: translate(265px,60px);
+}
+
+@keyframes growTourist {
+    0%{
+        transform: scaleX(-1) scale(0.2);
+    }
+    100%{
+        transform: scaleX(-1) scale(1);
+    }
+}
+@keyframes growLocal {
+    0%{
+        visibility: hidden;
+        transform: scale(0.2);
+    }
+    49%{
+        visibility: hidden;
+    }
+    50%{
+        visibility: visible;
+        transform: scale(0.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+
+#motivs{
+    background-color: #0052C8; 
+    padding: 50px;
+}
+#motivs p{
+    padding: 12px;
+    text-align: center;   
+}
+
+/* Footer */
+
+#footer{
+    background-color:rgb(56, 129, 255);
+    color: white;
+    height: 100px;
+    font-family: Verdana;
+    font-size: 14px;
+    padding-left: 15px;
+}
+#icon1{
+    height: 60px;
+    width: 60px;
+    float: right;
+    transform: translateY(-30px);
+    padding-right: 20px;
+    margin: 0px;
+}
+#firebaseLogo{
+    height: 50px;
+    width: 200px;
+    float: right;
+    transform: translate(-50px,-30px);
+}

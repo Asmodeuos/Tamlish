@@ -1,0 +1,24 @@
+.exitBtn{
+    float: right;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    transform: scale(1.2);
+    padding: 8px;
+}
+.nextSectionBtn{
+    cursor: pointer;
+    display: none;
+}
+.lessonSection{
+    display: none;
+}
+.imgs{
+    width: 200px;
+    height: 200px;
+}
+.clicked{
+    border: 2px solid green;
+}
+
+
