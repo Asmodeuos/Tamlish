@@ -12,3 +12,43 @@
 main{
     color: black;
 }
+#loginpg1{
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 10;
+    backdrop-filter: blur(11px);
+    text-align: center;
+}
+#emailVerifierUI{
+    background-color: white;
+    height: 90vh;
+    width: 60vh;
+    border-radius: 30px;
+    padding: 15px;
+    padding-top: 5px;
+    width: fit-content;
+    text-align: center;
+    position: relative;
+}
+
+#emailVerifierUI input{
+    width: 300px;
+}
+#emailVerifierUI h3{
+    display: inline-block;
+    width: fit-content;
+}
+
+#emailVerifierUI #EVexitBtn{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    padding: 20px;
+    transform: scale(1.4);
+    cursor: pointer;
+}

@@ -66,33 +66,36 @@ checkBtn.addEventListener("click", () => {
             }
         }
         else if (currentQuestionType === "typedEnglishInput"){
-            let wordSet = FuzzySet([currentAnswer]);
-            console.log(typedValue)
-            resultList = wordSet.get(typedValue,0,0.0);
-            if (resultList === 0){
-                accuracy = 0
-                closestMatch = "n/a"
-            }
-            else{
-                accuracy = resultList[0][0] // closest match accuracy value
-                closestMatch = resultList[0][1] // closest match
-            }
+            // let wordSet = FuzzySet([currentAnswer]);
+            // console.log(typedValue)
+            // resultList = wordSet.get(typedValue,0,0.0);
+            // if (resultList === 0){
+            //     accuracy = 0
+            //     closestMatch = "n/a"
+            // }
+            // else{
+            //     accuracy = resultList[0][0] // closest match accuracy value
+            //     closestMatch = resultList[0][1] // closest match
+            // }
             
-            if (accuracy >= 0.8){
-                console.log("correct")
-                console.log("accuracy: ", accuracy);
-                console.log("closest match: ", closestMatch);
+            // if (accuracy >= 0.8){
+            //     console.log("correct")
+            //     console.log("accuracy: ", accuracy);
+            //     console.log("closest match: ", closestMatch);
+            
+ 
+        
             }
             else{
-                console.log("incorrect")
-                console.log("accuracy: ", accuracy);
-                console.log("closest match: ", closestMatch);
+                // console.log("incorrect")
+                // console.log("accuracy: ", accuracy);
+                // console.log("closest match: ", closestMatch);
             }
         }
         }
             
 
-    }
+    
 
 );
 
@@ -105,4 +108,6 @@ function switchedSectionTo(){
 
 // Exporting Functions
 export { switchSection, oneElementSelector, markSection, switchedSectionTo };
+
+
 

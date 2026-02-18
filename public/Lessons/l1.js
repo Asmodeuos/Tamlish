@@ -22,7 +22,6 @@ continueBtn.addEventListener("click", () => {
     else if (switchedSectionTo() === "writeWord"){
         // Write the english word section
         switchSection(pickHeardWord, writeEnglishWord)
-
         markSection("test","typedEnglishInput","na")
     }
 })
