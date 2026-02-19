@@ -1,13 +1,28 @@
 let answered = false;
 let switchedTo;
+const root = document.documentElement;
+
+// Lesson length
+
+function lessonLength(length){
+    lessonLength = length;
+};
 
 // Change Lesson Section
+
+const lessonHud = document.getElementById("hud");
+const lessonEnd  = document.querySelector(".lesson_end");
 
 function switchSection(currentSection, nextSection) {
         currentSection.style.display = "none"
         nextSection.style.display = "block"
         answered = false;
-        continueBtn.style.display = "none"
+        resultBox.classList.remove("animated");
+        resultBox.classList.add("notAnimated");
+        if (nextSection === lessonEnd){
+            lessonHud.style.display = "none";
+            checkBtn.style.display = "none";
+        }
 };
 
 
@@ -35,79 +50,104 @@ function oneElementSelector(elementsClass) {
 let currentAnswer;
 let currentQuestionType;
 let typedValue;
-let accuracy;
 let switchedToSection;
-let resultList;
-let closestMatch;
+let editDistance;
+let currentEditDistance;
+let correctLength;
 const checkBtn = document.querySelector(".checkBtn");
-const continueBtn = document.querySelector(".nextSectionBtn");
 const typedEnglishWordPointer = document.querySelector(".EnglishTypedWord");
+const resultBox = document.querySelector(".resultBox");
 
 function markSection(answer, questionType, switchedToSectionpointer) {
-    currentAnswer = answer;
+    currentAnswer = answer.split(" ");
     currentQuestionType = questionType;
     switchedToSection = switchedToSectionpointer
 };
 
+function setResultsBoxColour(colour){
+    root.style.setProperty('--resultBox-bg-colour', colour);
+}
+
 checkBtn.addEventListener("click", () => {
-    typedValue = typedEnglishWordPointer.value.trim();
-    if (typedValue !== ""){
+    typedValue = typedEnglishWordPointer.value.trim().split(" ");
+    if (currentQuestionType === "typedEnglishInput" && typedValue.length > 0){
         answered = true;
     }
     if (answered){
-        continueBtn.style.display = "block";
         switchedTo = switchedToSection;
         if (currentQuestionType === "selection"){
-            if (currentAnswer === selectedElement) {
-            console.log("correct");
+            if (currentAnswer[0] === selectedElement) {
+                console.log("correct");
+                setResultsBoxColour("green");
             }
             else{
                 console.log("incorrect");
+                setResultsBoxColour("red");
             }
         }
         else if (currentQuestionType === "typedEnglishInput"){
-            // let wordSet = FuzzySet([currentAnswer]);
-            // console.log(typedValue)
-            // resultList = wordSet.get(typedValue,0,0.0);
-            // if (resultList === 0){
-            //     accuracy = 0
-            //     closestMatch = "n/a"
-            // }
-            // else{
-            //     accuracy = resultList[0][0] // closest match accuracy value
-            //     closestMatch = resultList[0][1] // closest match
-            // }
-            
-            // if (accuracy >= 0.8){
-            //     console.log("correct")
-            //     console.log("accuracy: ", accuracy);
-            //     console.log("closest match: ", closestMatch);
-            
- 
-        
+            if (typedValue.length === currentAnswer.length){
+                correctLength = true;
             }
             else{
-                // console.log("incorrect")
-                // console.log("accuracy: ", accuracy);
-                // console.log("closest match: ", closestMatch);
+                correctLength = false;
+                console.log("incorrect");
+                setResultsBoxColour("red");
+            }
+            if (correctLength){
+                let arrayDistances = [];
+                for (let i = 0; i < typedValue.length; i++){
+                    const wordI = typedValue[i];
+                    const wordA = currentAnswer[i];
+                    currentEditDistance = levenshtein(wordA, wordI).steps;
+                    arrayDistances.push(currentEditDistance);
+                }
+                editDistance = Math.max(...arrayDistances) // ... spread operator converts array into individual numbers
+                console.log("edit distance: ", editDistance);
+                if (editDistance <= 1){
+                    console.log("correct");
+                    setResultsBoxColour("green");
+                }
+                else{
+                    console.log("incorrect");
+                    setResultsBoxColour("red");
+                }
             }
         }
-        }
+        resultBox.classList.remove("notAnimated");
+        resultBox.classList.add("animated");
+        increaseProgress(lessonLength);
+    }
+});
             
 
-    
+// Progress bar
 
-);
+const progressBar = document.getElementById("progressBar");
+let progress = 0;
+
+function increaseProgress(lessonLength) {
+    if (progress < 100){
+        progress += (100/lessonLength);
+        progressBar.style.width = progress + '%';
+    }
+};
+
+// End of the lesson
+
+const endLessonBtn = document.getElementById("endLessonBtn");
+
+endLessonBtn.addEventListener("click", () =>{
+    window.location.href = "lessons.html";
+})
 
 
 function switchedSectionTo(){
     return switchedTo;
 }
 
-
-
 // Exporting Functions
-export { switchSection, oneElementSelector, markSection, switchedSectionTo };
+export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonLength };
 
 
 

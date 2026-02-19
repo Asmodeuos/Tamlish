@@ -1,4 +1,4 @@
-import { switchSection, oneElementSelector, markSection, switchedSectionTo } from "./lessonFunctions.js"; 
+import { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonLength } from "./lessonFunctions.js"; 
 
 const continueBtn = document.querySelector(".nextSectionBtn");
 const imageSection = document.querySelector(".choose_picture");
@@ -6,6 +6,7 @@ const pickHeardWord = document.querySelector(".choose_heard_word");
 const writeEnglishWord = document.querySelector(".write_EnglishWord")
 const lessonEnd  = document.querySelector(".lesson_end");
 
+lessonLength(3);
 // Pick the correct image section
 
 switchSection(lessonEnd,imageSection)
@@ -22,7 +23,12 @@ continueBtn.addEventListener("click", () => {
     else if (switchedSectionTo() === "writeWord"){
         // Write the english word section
         switchSection(pickHeardWord, writeEnglishWord)
-        markSection("test","typedEnglishInput","na")
+        markSection("this is a test","typedEnglishInput","lessonEnd")
+    }
+    else if (switchedSectionTo() === "lessonEnd"){
+        // End of the lesson
+        switchSection(writeEnglishWord, lessonEnd)
+        
     }
 })
 
