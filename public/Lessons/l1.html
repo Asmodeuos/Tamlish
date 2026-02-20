@@ -11,14 +11,15 @@
 </head>
 
 <body>
-    <main>
-        <div id="hud">
-            <a href="lessons.html"><span class="material-symbols-outlined exitBtn">close</span></a>
-            <div class="progressBarContainer">
-                <div id="progressBar">
-                </div>
+    <div id="hud">
+        <a href="lessons.html"><span class="material-symbols-outlined exitBtn">close</span></a>
+        <div class="progressBarContainer">
+            <div id="progressBar">
             </div>
         </div>
+    </div>
+    <main>
+
         <br>
         <div class="choose_picture lessonSection">
             pick the correct picture <br>
@@ -42,12 +43,15 @@
             <input class="EnglishTypedWord" type="text" autocomplete="off">
         </div>
 
+        <div id="lessonOverlay"></div>
+
         <button class="checkBtn">Check</button>
         <div class="resultBox">
             <button class="nextSectionBtn">Next</button>
         </div>
         <div class="lesson_end lessonSection">
             end of lesson
+            <div id="lessonTime"></div>
             <button id="endLessonBtn">Finish</button>
         </div>
     </main>

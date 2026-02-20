@@ -54,6 +54,7 @@ button{
     width: 100%;
     height: 150px;
     margin-left: 0px;
+    z-index: 3;
 }
 .animated{
     bottom: 0px;
@@ -63,6 +64,15 @@ button{
 }
 body{
     margin: 0;
+}
+main{
+    position: relative;
+}
+#lessonOverlay{
+    position: absolute;
+    background: transparent;
+    inset: 0;   
+    display: none;
 }
 
 

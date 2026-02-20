@@ -3,15 +3,34 @@ let switchedTo;
 const root = document.documentElement;
 
 // Lesson length
+let lessonLengthValue;
 
 function lessonLength(length){
-    lessonLength = length;
+    lessonLengthValue = length;
 };
+
+// Timer
+
+let time;
+let startTime;
+let finalTime;
+
+function timer(command){
+    if (command === "start"){
+        startTime = Date.now();
+    }
+    else if (command === "stop"){
+        finalTime = Date.now();
+        time = finalTime - startTime;
+        return time;
+    }
+}
 
 // Change Lesson Section
 
 const lessonHud = document.getElementById("hud");
 const lessonEnd  = document.querySelector(".lesson_end");
+const lessonOverlay = document.getElementById("lessonOverlay");
 
 function switchSection(currentSection, nextSection) {
         currentSection.style.display = "none"
@@ -19,6 +38,8 @@ function switchSection(currentSection, nextSection) {
         answered = false;
         resultBox.classList.remove("animated");
         resultBox.classList.add("notAnimated");
+        sectionState = "answering";
+        lessonOverlay.style.display = "none";
         if (nextSection === lessonEnd){
             lessonHud.style.display = "none";
             checkBtn.style.display = "none";
@@ -41,9 +62,17 @@ function oneElementSelector(elementsClass) {
             console.log(selectedElement);
             answered = true;
             console.log("answered:", answered)
-
         });
-    })
+    });
+    window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && lessonOverlay.style.display !== "block" && currentQuestionType !== "typedeEnglishInput"){
+            elements.forEach(elmnt => {
+                elmnt.classList.remove("clicked");
+            });
+            answered = false;
+            selectedElement = null;
+        };
+    });
 };
 
 // Section Marker
@@ -54,6 +83,8 @@ let switchedToSection;
 let editDistance;
 let currentEditDistance;
 let correctLength;
+let clicked = 0;
+let sectionState = "answering";
 const checkBtn = document.querySelector(".checkBtn");
 const typedEnglishWordPointer = document.querySelector(".EnglishTypedWord");
 const resultBox = document.querySelector(".resultBox");
@@ -68,10 +99,12 @@ function setResultsBoxColour(colour){
     root.style.setProperty('--resultBox-bg-colour', colour);
 }
 
-checkBtn.addEventListener("click", () => {
-    typedValue = typedEnglishWordPointer.value.trim().split(" ");
+function mark(){
+    if (sectionState !== "answering") return; //exits if mark has already been called once
+    typedValue = typedEnglishWordPointer.value.trim();
     if (currentQuestionType === "typedEnglishInput" && typedValue.length > 0){
         answered = true;
+        typedValue = typedValue.split(" ");
     }
     if (answered){
         switchedTo = switchedToSection;
@@ -102,7 +135,7 @@ checkBtn.addEventListener("click", () => {
                     currentEditDistance = levenshtein(wordA, wordI).steps;
                     arrayDistances.push(currentEditDistance);
                 }
-                editDistance = Math.max(...arrayDistances) // ... spread operator converts array into individual numbers
+                editDistance = Math.max(...arrayDistances) // ... spread operator convertsarray    into individual numbers
                 console.log("edit distance: ", editDistance);
                 if (editDistance <= 1){
                     console.log("correct");
@@ -116,10 +149,35 @@ checkBtn.addEventListener("click", () => {
         }
         resultBox.classList.remove("notAnimated");
         resultBox.classList.add("animated");
-        increaseProgress(lessonLength);
+        lessonOverlay.style.display = "block";
+        clicked ++
+        if (clicked === 1){
+            increaseProgress(lessonLengthValue);
+        }
+        sectionState = "marked";
     }
+    
+};
+
+checkBtn.addEventListener("click", () => {
+    mark();
 });
-            
+
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && sectionState === "answering"){
+        mark();
+    }
+    else if(event.key === "Enter" && sectionState === "marked"){
+        window.dispatchEvent(new CustomEvent("enterKeyPressed"));
+        if (switchedTo !== "lessonEnd"){
+            sectionState = "answering"; // To allow more clicks for next sections
+        }
+        else{
+            sectionState = "finished";
+        }
+    }
+})
 
 // Progress bar
 
@@ -147,7 +205,7 @@ function switchedSectionTo(){
 }
 
 // Exporting Functions
-export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonLength };
+export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonLength, timer };
 
 
 
