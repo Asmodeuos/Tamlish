@@ -74,5 +74,15 @@ main{
     inset: 0;   
     display: none;
 }
-
+#answerMessage, #messageBox{
+    color: white;
+    height: fit-content;
+}
+#userFeedbackBox{
+    float: right;
+    display: none;
+}
+#messages{
+    float: left;
+}
 

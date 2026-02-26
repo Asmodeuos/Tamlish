@@ -7,7 +7,7 @@
     <title>Lesson 1</title>
     <link rel="icon" type="image/png" href="../Images/favicon.png">
     <link rel="stylesheet" href="lessonTheme.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 
 <body>
@@ -47,6 +47,24 @@
 
         <button class="checkBtn">Check</button>
         <div class="resultBox">
+            <div id="results">
+                <div id="messages">
+                    <div id="messageBox"></div>
+                    <div id="answerMessage"></div>
+                </div>
+                <div id="userFeedbackBox">
+                    <button id="goodProficiencyBtn" class="feedbackBtn"><span class="material-symbols-outlined">
+                            sentiment_satisfied
+                        </span></button>
+                    <button id="neutralProficiencyBtn" class="feedbackBtn"><span class="material-symbols-outlined">
+                            sentiment_neutral
+                        </span></button>
+                    <button id="badProficiencyBtn" class="feedbackBtn"><span class="material-symbols-outlined">
+                            sentiment_dissatisfied
+                        </span></button>
+                </div>
+            </div>
+            <br><br>
             <button class="nextSectionBtn">Next</button>
         </div>
         <div class="lesson_end lessonSection">

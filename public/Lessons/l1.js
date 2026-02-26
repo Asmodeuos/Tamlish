@@ -6,28 +6,30 @@ const pickHeardWord = document.querySelector(".choose_heard_word");
 const writeEnglishWord = document.querySelector(".write_EnglishWord")
 const lessonEnd  = document.querySelector(".lesson_end");
 const lessonTime = document.getElementById("lessonTime");
-const resultBox = document.querySelector(".resultBox");
 let time;
+
+
+// TODO replace vocab and elemtns ids with vocab ids
 
 lessonLength(3);
 timer("start");
 // Pick the correct image section
 
 switchSection(lessonEnd,imageSection)
-oneElementSelector("imgs");
-markSection("img2", "selection", "pickHeardWord");
+oneElementSelector("imgs","img2");
+markSection("", "selection", "pickHeardWord");
 
 function continueLesson(){
     if (switchedSectionTo() === "pickHeardWord"){
         // Pick the correct heard word section
         switchSection(imageSection, pickHeardWord)
-        oneElementSelector("heardWords")
-        markSection("heardWord2","selection", "writeWord")
+        oneElementSelector("heardWords","heardWord2")
+        markSection("","selection", "writeEnglishWord")
     }
-    else if (switchedSectionTo() === "writeWord"){
+    else if (switchedSectionTo() === "writeEnglishWord"){
         // Write the english word section
         switchSection(pickHeardWord, writeEnglishWord)
-        markSection("this is a test","typedEnglishInput","lessonEnd")
+        markSection("t1w1","typedEnglishInput","lessonEnd")
     }
     else if (switchedSectionTo() === "lessonEnd"){
         // End of the lesson
