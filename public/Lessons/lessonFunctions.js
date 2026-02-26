@@ -1,4 +1,4 @@
-import { auth, doc, setDoc, db } from "../firebase-config.js";
+import { auth, doc, setDoc, db, onAuthStateChanged } from "../firebase-config.js";
 
 let answered = false;
 let switchedTo;
@@ -11,6 +11,14 @@ const root = document.documentElement;
 // * lesson section types {current: imagesection, pickheardword, writeEnglishWord, lessonEnd } (new: writeTamlishWord, pickwrittenword, picksoundheardword)
 
 
+let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUser = user;
+    }
+});
+
 // Fetching vocabulary IDs
 let vocab;
 
@@ -22,11 +30,13 @@ fetch("../Dictionary/dictionary.json")
   });
 
 
-// Lesson length
+// Lesson length and topic number
 let lessonLengthValue;
+let topic;
 
-function lessonLength(length){
+function lessonLength(length, topicnum){
     lessonLengthValue = length;
+    topic = topicnum;
 };
 
 // Timer
@@ -60,6 +70,8 @@ function switchSection(currentSection, nextSection) {
         resultBox.classList.add("notAnimated");
         sectionState = "answering";
         lessonOverlay.style.display = "none";
+        clicked = 0;
+        selectedFeedback = null;
         if (nextSection === lessonEnd){
             lessonHud.style.display = "none";
             checkBtn.style.display = "none";
@@ -109,12 +121,14 @@ let correctLength;
 let clicked = 0;
 let sectionState = "answering";
 let vocabData;
+let selectedFeedback;
 const checkBtn = document.querySelector(".checkBtn");
 const typedEnglishWordPointer = document.querySelector(".EnglishTypedWord");
 const resultBox = document.querySelector(".resultBox");
 const messageOverview = document.getElementById("messageBox");
 const answerMessage = document.getElementById("answerMessage");
 const userFeedbackBox = document.getElementById("userFeedbackBox");
+const feedbackBtns = document.querySelectorAll(".feedbackBtn");
 
 function markSection(answerID, questionType, switchedToSectionpointer) {
     currentAnswerID = answerID;
@@ -132,39 +146,51 @@ function setMessages(messageoverview, answermessage){
     answerMessage.textContent = answermessage;
 }
 
-async function addWordtoTopic(answerstatus, topic, vocabID){
-    const feedbackBtns = document.querySelectorAll(".feedbackBtn");
+feedbackBtns.forEach(button => {
+    button.addEventListener("click", (event) =>{
+        const btnID = event.target.id;
+        if (btnID === "goodProficiencyBtn"){
+            selectedFeedback = "good";
+        }
+        else if (btnID === "neutralProficiencyBtn"){
+            selectedFeedback = "neutral";
+        }
+        else if (btnID === "badProficiencyBtn"){
+            selectedFeedback = "bad";
+        }
+    })
+})
 
+
+async function addWordtoTopic(answerstatus, vocabID){
     if (answerstatus === "correct"){
-        vocabData = "good"
+        vocabData = "good";
     }
     else if (answerstatus === "mostlyCorrect"){
         vocabData = "neutral"
     }
-    else{
-        feedbackBtns.forEach(button => {
-            button.addEventListener("click", (event) =>{
-                const btnID = event.target.id;
-                if (btnID = "goodProficiencyBtn"){
-                    vocabData = "good";
-                }
-                else if (btnID = "neutralProficiencyBtn"){
-                    vocabData = "neutral";
-                }
-                else if (btnID = "badProficiencyBtn"){
-                    vocabData = "bad";
-                }
-            })
-        })
+    else if (answerstatus === "incorrect"){
+        vocabData = selectedFeedback ?? "bad";
     }
-    const user = auth.currentUser;
-    if (user){
-        const userId = user.uid;
-        const wordsDocRef = doc(db, "users", userId, "topics", topic, "vocab", "words");
-        await setDoc(wordsDocRef, {
-            [vocabID]: vocabData
-        }, { merge: true });
-        console.log(`added proficency of ${vocabData} to ${vocabID}`);
+    else{
+        vocabData = "bad";
+    }
+    const userID = currentUser.uid;
+    if (currentUser){
+        try{
+            const wordsDocRef = doc(db, "users", userID, "topics", topic, "vocab", "words");
+            await setDoc(wordsDocRef, {
+                [vocabID]: vocabData
+            }, { merge: true });
+            console.log(`added proficency of ${vocabData} to ${vocabID}`);
+            const topicDocRef = doc(db, "users", userID, "topics", topic);
+            await setDoc(topicDocRef, {
+                "status": "active"
+            }, { merge: true });
+        }
+        catch (error){
+            console.log("error with database", error)
+        }
     }
 }
 
@@ -185,12 +211,12 @@ function mark(){
     if (answered){
         switchedTo = switchedToSection;
         if (currentQuestionType === "selection"){
+            // TODO add selector ids and apply marking logic for that
             if (currentAnswer[0] === selectedElement) {
                 console.log("correct");
                 setResultsBoxColour("green");
                 setMessages("Well Done!","");
                 userFeedbackBox.style.display = "none";
-                addWordtoTopic("correct", )
             }
             else{
                 console.log("incorrect");
@@ -200,8 +226,6 @@ function mark(){
             }
         }
         else if (currentQuestionType === "typedEnglishInput"){
-            // TODO use vocab ids to get actual vocab to cmpare and do markign logic
-
             if (typedValue.length === currentAnswer.length){
                 correctLength = true;
             }
@@ -211,7 +235,7 @@ function mark(){
                 setResultsBoxColour("red");
                 setMessages("Incorrect",`The correct answer was "${currentAnswer.join(" ")}"`);
                 userFeedbackBox.style.display = "block";
-
+                addWordtoTopic("incorrect", currentAnswerID);
             }
             if (correctLength){
                 let arrayDistances = [];
@@ -228,18 +252,21 @@ function mark(){
                     setResultsBoxColour("green");
                     setMessages("Well Done!","");
                     userFeedbackBox.style.display = "none";
+                    addWordtoTopic("mostlyCorrect", currentAnswerID);
                 }
                 else if (editDistance === 0){
                     console.log("correct");
                     setResultsBoxColour("green");
                     setMessages("Perfect","");
                     userFeedbackBox.style.display = "none";
+                    addWordtoTopic("correct", currentAnswerID);
                 }
                 else{
                     console.log("incorrect");
                     setResultsBoxColour("red");
                     setMessages("Incorrect",`The correct answer was "${currentAnswer.join(" ")}"`);
                     userFeedbackBox.style.display = "block";
+                    addWordtoTopic("incorrect", currentAnswerID);
 
                 }
             }
@@ -292,11 +319,24 @@ function increaseProgress(lessonLength) {
 
 const endLessonBtn = document.getElementById("endLessonBtn");
 
-endLessonBtn.addEventListener("click", () =>{
-    window.location.href = "lessons.html";
+endLessonBtn.addEventListener("click", async () =>{
     // add lesson num status "completed"
-})
-
+    const lessonNum = document.title.match(/Lesson (\d+)/)?.[1];    
+    if (lessonNum && currentUser){
+        const lessonNumber = `lesson${lessonNum}`;
+        try{
+            const userID = currentUser.uid;
+            const lessonStatusDocRef = doc(db, "users", userID, "lessonStatuses", "lessonStatus")
+            await setDoc(lessonStatusDocRef, {
+                [lessonNumber]: "completed"
+            }, { merge: true });
+        }   
+        catch (error){
+            console.log("error",error);
+        }
+    }
+    window.location.href = "lessons.html";
+});
 
 function switchedSectionTo(){
     return switchedTo;

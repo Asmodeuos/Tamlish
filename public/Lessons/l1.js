@@ -11,7 +11,7 @@ let time;
 
 // TODO replace vocab and elemtns ids with vocab ids
 
-lessonLength(3);
+lessonLength(3,"topic1");
 timer("start");
 // Pick the correct image section
 
