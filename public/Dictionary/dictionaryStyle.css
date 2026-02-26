@@ -9,3 +9,16 @@
     color: white;
     box-shadow: 2px 5px rgb(88, 133, 230);
 }
+.table{
+    color: black;
+    width: fit-content;
+}
+main{
+    color: black;
+}
+#phrasesTable{
+    display: none;
+}
+#backBtn{
+    display: none;
+}

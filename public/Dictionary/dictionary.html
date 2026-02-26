@@ -66,7 +66,38 @@
     </header>
 
     <main>
+        <br>
+        <input type="search" id="searchBox"><button id="searchBtn">Search</button><button id="backBtn">Back</button><br>
+        <div id="switchBtns">
+            <button id="wordsSwitchBtn">Words</button>
+            <button id="phrasesSwitchBtn">Phrases</button>
+        </div><br>
+        <table id="wordsTable" border="1" class="table">
+            <caption>Words</caption>
+            <thead>
+                <tr>
+                    <th>Listen</th>
+                    <th>English</th>
+                    <th>Tamlish</th>
+                    <th>Proficiency</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
+        <table id="phrasesTable" border="1" class="table">
+            <caption>Phrases</caption>
+            <thead>
+                <tr>
+                    <th>Listen</th>
+                    <th>English</th>
+                    <th>Tamlish</th>
+                    <th>Proficiency</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </main>
 
     <footer id="footer">
@@ -77,7 +108,9 @@
         <img src="../Images/Primary_Horizontal_Lockup_Full_Color.png" id="firebaseLogo" alt="Firebase Logo">
     </footer>
 
+    <script type="module"> import fuseJs from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/+esm'; window.Fuse = fuseJs; </script>
     <script src="../index.js" type="module"></script>
+    <script src="dictionary.js" type="module"></script>
 
 </body>
 

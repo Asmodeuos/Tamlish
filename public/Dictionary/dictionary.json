@@ -6,5 +6,9 @@
     "t1w2":{
         "english": "test",
         "tamlish": "Test!"
+    },
+    "t1p1":{
+        "english": "this is a test",
+        "tamlish": "Test test etst test"
     }
 }
