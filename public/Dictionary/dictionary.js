@@ -1,5 +1,4 @@
-// TODO create words+ prhases datset and searhcing capabilites
-// TODO database structre - when fetchign all words and thier profocinecies for user -  use topic statusues to only fetch active topics by getting ids starting with (.startswith) t(topicnumber)
+import { auth, onAuthStateChanged, db, doc, getDocs, getDoc, collection } from "../firebase-config.js";
 
 const wordsTableBody = document.getElementById("wordsTable").querySelector("tbody");
 const phrasesTableBody = document.getElementById("phrasesTable").querySelector("tbody");
@@ -8,7 +7,33 @@ const phrasesTable = document.getElementById("phrasesTable");
 const wordsSwitchBtn = document.getElementById("wordsSwitchBtn");
 const phrasesSwitchBtn = document.getElementById("phrasesSwitchBtn");
 const backBtn = document.getElementById("backBtn");
+let currentUser = null;
+let vocab = {}; 
+let wordsArray = [];
+let phrasesArray = [];
+let fuseWords;
+let fusePhrases;
 
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        const response = await fetch("dictionary.json");
+        vocab = await response.json();
+        await loadVocabProficiency();
+        for (let id in vocab){
+            if (id.includes("w")){
+                wordsArray.push({ id: id, proficiency: vocabProficiencyData[id], english: vocab[id].english, tamlish: vocab[id].tamlish });
+            }
+            else if (id.includes("p")){
+                phrasesArray.push({ id: id, proficiency: vocabProficiencyData[id], english: vocab[id].english, tamlish: vocab[id].tamlish });
+            }
+          }
+          populateTable(wordsArray, wordsTableBody);
+          populateTable(phrasesArray, phrasesTableBody);
+          fuseWords = new Fuse(wordsArray, options);
+          fusePhrases = new Fuse(phrasesArray, options);
+        };
+});
 
 wordsSwitchBtn.addEventListener("click", () => {
   wordsTable.style.display = "block";
@@ -20,28 +45,22 @@ phrasesSwitchBtn.addEventListener("click", () => {
   phrasesTable.style.display = "block";
 });
 
-let vocab = {}; 
-let wordsArray = [];
-let phrasesArray = [];
-let fuseWords;
-let fusePhrases;
-fetch("dictionary.json")
-  .then(res => res.json())
-  .then(data => {
-    vocab = data;
-    for (let id in vocab){
-        if (id.includes("w")){
-            wordsArray.push({ id: id, english: vocab[id].english, tamlish: vocab[id].tamlish });
-        }
-        else if (id.includes("p")){
-            phrasesArray.push({ id: id, english: vocab[id].english, tamlish: vocab[id].tamlish });
+let vocabProficiencyData = [];
+
+async function loadVocabProficiency(){
+    try{
+        const topicsQuery = await getDocs(collection(db, "users", currentUser.uid, "topics"));
+        for (const topic of topicsQuery.docs){
+            const wordsProficiencyDocRef = doc(db, "users", currentUser.uid, "topics", topic.id, "vocab", "words");
+            const wordsProficiencyDoc = await getDoc(wordsProficiencyDocRef);
+            const topicVocabProficiencyData = wordsProficiencyDoc.data() || {};
+            vocabProficiencyData = {...vocabProficiencyData, ...topicVocabProficiencyData};
         }
     }
-    populateTable(wordsArray, wordsTableBody);
-    populateTable(phrasesArray, phrasesTableBody);
-    fuseWords = new Fuse(wordsArray, options);
-    fusePhrases = new Fuse(phrasesArray, options);
-  });
+    catch(error){
+        console.log("error: ",error);
+    }
+}
 
 
 function populateTable(array, table) {
@@ -63,6 +82,7 @@ function populateTable(array, table) {
         row.appendChild(tamlishCell);
 
         const proficencyCell = document.createElement("td");
+        proficencyCell.textContent = vocabProficiencyData[item.id];
         row.appendChild(proficencyCell);
         
         table.appendChild(row);
@@ -70,7 +90,7 @@ function populateTable(array, table) {
 };  
 
 const options = {
-  keys: ["english", "tamlish"],
+  keys: ["proficiency","english", "tamlish"],
 //   threshold: 0.9, 
 };
 
@@ -104,4 +124,5 @@ backBtn.addEventListener("click", () => {
     populateTable(wordsArray, wordsTableBody);
     populateTable(phrasesArray, phrasesTableBody);
     backBtn.style.display = "none";
+    searchQuery.value = "";
 })
