@@ -1,4 +1,4 @@
-import { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonLength, timer } from "./lessonFunctions.js"; 
+import { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonDetails, timer } from "./lessonFunctions.js"; 
 
 const continueBtn = document.querySelector(".nextSectionBtn");
 const imageSection = document.querySelector(".choose_picture");
@@ -8,13 +8,12 @@ const lessonEnd  = document.querySelector(".lesson_end");
 const lessonTime = document.getElementById("lessonTime");
 let time;
 
+// TODO add selector ids
 
-// TODO replace vocab and elemtns ids with vocab ids
-
-lessonLength(3,"topic1");
+lessonDetails(4,"topic1", "lesson1");
 timer("start");
-// Pick the correct image section
 
+// Pick the correct image section
 switchSection(lessonEnd,imageSection)
 oneElementSelector("imgs","img2");
 markSection("", "selection", "pickHeardWord");
@@ -24,12 +23,17 @@ function continueLesson(){
         // Pick the correct heard word section
         switchSection(imageSection, pickHeardWord)
         oneElementSelector("heardWords","heardWord2")
-        markSection("","selection", "writeEnglishWord")
+        markSection("","selection", "writeEnglishWord1")
     }
-    else if (switchedSectionTo() === "writeEnglishWord"){
+    else if (switchedSectionTo() === "writeEnglishWord1"){
         // Write the english word section
         switchSection(pickHeardWord, writeEnglishWord)
-        markSection("t1w1","typedEnglishInput","lessonEnd")
+        markSection("t1w1","typedEnglishInput","writeEnglishWord2")
+    }
+    else if (switchedSectionTo() === "writeEnglishWord2"){
+        // Write the english word section
+        switchSection(pickHeardWord, writeEnglishWord)
+        markSection("t1w2","typedEnglishInput","lessonEnd")
     }
     else if (switchedSectionTo() === "lessonEnd"){
         // End of the lesson

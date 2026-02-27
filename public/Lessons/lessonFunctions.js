@@ -33,10 +33,13 @@ fetch("../Dictionary/dictionary.json")
 // Lesson length and topic number
 let lessonLengthValue;
 let topic;
+let lesson;
 
-function lessonLength(length, topicnum){
+function lessonDetails(length, topicnum, lessonnum){
     lessonLengthValue = length;
     topic = topicnum;
+    lesson = lessonnum; 
+
 };
 
 // Timer
@@ -72,6 +75,8 @@ function switchSection(currentSection, nextSection) {
         lessonOverlay.style.display = "none";
         clicked = 0;
         selectedFeedback = null;
+        selectedElement = null;
+        typedEnglishWordPointer.value = "";
         if (nextSection === lessonEnd){
             lessonHud.style.display = "none";
             checkBtn.style.display = "none";
@@ -82,10 +87,11 @@ function switchSection(currentSection, nextSection) {
 // Singular correct element selection logic
 let selectedElement;
 let answerOption;
+let elements;
 
 function oneElementSelector(elementsClass, answeroption) {
     answerOption = answeroption; // * temp varabile till selction storgare sorted out
-    const elements = document.querySelectorAll(`.${elementsClass}`);
+    elements = document.querySelectorAll(`.${elementsClass}`);
     elements.forEach(element => {
         element.addEventListener("click", () => {
             elements.forEach(elmnt => {
@@ -98,16 +104,47 @@ function oneElementSelector(elementsClass, answeroption) {
             console.log("answered:", answered)
         });
     });
-    window.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && lessonOverlay.style.display !== "block" && currentQuestionType !== "typedeEnglishInput"){
+};
+
+// Escape key logic
+const cancelLessonBox = document.getElementById("cancelLessonBox");
+const quitLessonBtn = document.getElementById("quitLessonBtn");
+const continueBtn = document.getElementById("cancelBtn");
+const exitBtn = document.getElementById("exitbtn");
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape"){
+        if (selectedElement && elements){
             elements.forEach(elmnt => {
-                elmnt.classList.remove("clicked");
+            elmnt.classList.remove("clicked");
             });
             answered = false;
             selectedElement = null;
-        };
-    });
-};
+        } 
+        else if (document.activeElement.tagName === "INPUT"){
+            document.activeElement.blur();
+        }
+        else{
+            cancelLessonBox.classList.remove("notAnimated");
+            cancelLessonBox.classList.add("animated");
+            console.log("tried to escape lesson");
+        }
+    }
+});
+
+quitLessonBtn.addEventListener("click", () =>{
+    window.location.href = "lessons.html";
+})
+
+continueBtn.addEventListener("click", () =>{
+    cancelLessonBox.classList.remove("animated");
+    cancelLessonBox.classList.add("notAnimated");
+})
+
+exitBtn.addEventListener("click", () => {
+    cancelLessonBox.classList.remove("notAnimated");
+    cancelLessonBox.classList.add("animated");
+})
 
 // Section Marker
 let currentAnswerID;
@@ -192,7 +229,7 @@ async function addWordtoTopic(answerstatus, vocabID){
             console.log("error with database", error)
         }
     }
-}
+};
 
 function mark(){
     if (sectionState !== "answering") return; //exits if mark has already been called once
@@ -212,7 +249,7 @@ function mark(){
         switchedTo = switchedToSection;
         if (currentQuestionType === "selection"){
             // TODO add selector ids and apply marking logic for that
-            if (currentAnswer[0] === selectedElement) {
+            if (currentAnswer === selectedElement) {
                 console.log("correct");
                 setResultsBoxColour("green");
                 setMessages("Well Done!","");
@@ -267,7 +304,6 @@ function mark(){
                     setMessages("Incorrect",`The correct answer was "${currentAnswer.join(" ")}"`);
                     userFeedbackBox.style.display = "block";
                     addWordtoTopic("incorrect", currentAnswerID);
-
                 }
             }
         }
@@ -280,7 +316,6 @@ function mark(){
         }
         sectionState = "marked";
     }
-    
 };
 
 checkBtn.addEventListener("click", () => {
@@ -320,15 +355,12 @@ function increaseProgress(lessonLength) {
 const endLessonBtn = document.getElementById("endLessonBtn");
 
 endLessonBtn.addEventListener("click", async () =>{
-    // add lesson num status "completed"
-    const lessonNum = document.title.match(/Lesson (\d+)/)?.[1];    
-    if (lessonNum && currentUser){
-        const lessonNumber = `lesson${lessonNum}`;
+    if (currentUser){
         try{
             const userID = currentUser.uid;
             const lessonStatusDocRef = doc(db, "users", userID, "lessonStatuses", "lessonStatus")
             await setDoc(lessonStatusDocRef, {
-                [lessonNumber]: "completed"
+                [lesson]: "completed"
             }, { merge: true });
         }   
         catch (error){
@@ -343,7 +375,7 @@ function switchedSectionTo(){
 }
 
 // Exporting Functions
-export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonLength, timer };
+export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonDetails, timer };
 
 
 
