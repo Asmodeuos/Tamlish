@@ -71,6 +71,10 @@ function populateTable(array, table) {
         row.id = item.id;
 
         const listenCell = document.createElement("td");
+        const icon = document.createElement("span");
+        icon.className = "material-symbols-outlined";
+        icon.textContent = "volume_up";
+        listenCell.appendChild(icon);
         row.appendChild(listenCell);
 
         const englishCell = document.createElement("td");

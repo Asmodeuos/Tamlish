@@ -12,6 +12,10 @@
 .table{
     color: black;
     width: fit-content;
+    text-align: center;
+}
+.table td{
+    padding: 4px;
 }
 main{
     color: black;

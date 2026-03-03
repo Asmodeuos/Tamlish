@@ -1,14 +1,14 @@
 {
     "t1w1":{
-        "english": "hello",
-        "tamlish": "olleh"
+        "english": "Hello",
+        "tamlish": "Vanakkam"
     },
     "t1w2":{
-        "english": "test",
-        "tamlish": "Test!"
+        "english": "Thank you",
+        "tamlish": "Nandri"
     },
     "t1p1":{
-        "english": "this is a test",
-        "tamlish": "Test test etst test"
+        "english": "How are you",
+        "tamlish": "Yepperdi irriku"
     }
 }
