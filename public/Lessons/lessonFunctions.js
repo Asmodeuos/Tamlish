@@ -81,8 +81,25 @@ function switchSection(currentSection, nextSection) {
             lessonHud.style.display = "none";
             checkBtn.style.display = "none";
         }
+        // add logic to insert question vocab by id
 };
 
+// Setting question data + audio
+
+function question(vocabid, wordElement, soundElement, soundBtn, language){
+    const wordelement = document.getElementById(wordElement);
+    wordelement.textContent = vocab[vocabid][language];
+    if (soundElement && soundBtn){
+        const soundelement = document.getElementById(soundElement);
+        const soundbtn = document.getElementById(soundBtn);
+        soundelement.src = `../Audio/${vocabid}.mp3`;
+        if (soundbtn){
+            soundbtn.onclick = () => {
+                soundelement.play();
+            };
+        }
+    }
+}
 
 // Singular correct element selection logic
 let selectedElement;
@@ -114,7 +131,7 @@ const exitBtn = document.getElementById("exitbtn");
 
 window.addEventListener("keydown", (event) => {
     if (event.key === "Escape"){
-        if (selectedElement && elements){
+        if (selectedElement && elements && lessonOverlay.style.display === "none"){
             elements.forEach(elmnt => {
             elmnt.classList.remove("clicked");
             });
@@ -146,6 +163,7 @@ exitBtn.addEventListener("click", () => {
     cancelLessonBox.classList.add("animated");
 })
 
+// TODO fix enter and escape logic - bit buggy
 // Section Marker
 let currentAnswerID;
 let currentAnswer;
@@ -187,13 +205,13 @@ feedbackBtns.forEach(button => {
     button.addEventListener("click", (event) =>{
         const btnID = event.target.id;
         if (btnID === "goodProficiencyBtn"){
-            selectedFeedback = "good";
+            selectedFeedback = "Good";
         }
         else if (btnID === "neutralProficiencyBtn"){
-            selectedFeedback = "neutral";
+            selectedFeedback = "Neutral";
         }
         else if (btnID === "badProficiencyBtn"){
-            selectedFeedback = "bad";
+            selectedFeedback = "Bad";
         }
     })
 })
@@ -201,16 +219,16 @@ feedbackBtns.forEach(button => {
 
 async function addWordtoTopic(answerstatus, vocabID){
     if (answerstatus === "correct"){
-        vocabData = "good";
+        vocabData = "Good";
     }
     else if (answerstatus === "mostlyCorrect"){
-        vocabData = "neutral"
+        vocabData = "Neutral"
     }
     else if (answerstatus === "incorrect"){
-        vocabData = selectedFeedback ?? "bad";
+        vocabData = selectedFeedback ?? "Bad";
     }
     else{
-        vocabData = "bad";
+        vocabData = "Bad";
     }
     const userID = currentUser.uid;
     if (currentUser){
@@ -234,7 +252,7 @@ async function addWordtoTopic(answerstatus, vocabID){
 function mark(){
     if (sectionState !== "answering") return; //exits if mark has already been called once
     if (currentQuestionType === "typedEnglishInput"){
-        currentAnswer = vocab[currentAnswerID].tamlish.split(" ");
+        currentAnswer = vocab[currentAnswerID].english.toLowerCase().split(" ");
     }
     else if (currentQuestionType === "selection"){
         currentAnswer = answerOption;
@@ -243,7 +261,7 @@ function mark(){
     typedEnglishWordPointer.blur(); // deselects input box
     if (currentQuestionType === "typedEnglishInput" && typedValue.length > 0){
         answered = true;
-        typedValue = typedValue.split(" ");
+        typedValue = typedValue.toLowerCase().split(" ");
     }
     if (answered){
         switchedTo = switchedToSection;
@@ -324,6 +342,7 @@ checkBtn.addEventListener("click", () => {
 
 
 window.addEventListener("keydown", (event) => {
+    if (cancelLessonBox.classList.contains("animated")) return;
     if (event.key === "Enter" && sectionState === "answering"){
         mark();
     }
@@ -375,7 +394,7 @@ function switchedSectionTo(){
 }
 
 // Exporting Functions
-export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonDetails, timer };
+export { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonDetails, timer, question };
 
 
 

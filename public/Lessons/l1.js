@@ -1,4 +1,4 @@
-import { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonDetails, timer } from "./lessonFunctions.js"; 
+import { switchSection, oneElementSelector, markSection, switchedSectionTo, lessonDetails, timer, question } from "./lessonFunctions.js"; 
 
 const continueBtn = document.querySelector(".nextSectionBtn");
 const imageSection = document.querySelector(".choose_picture");
@@ -28,6 +28,7 @@ function continueLesson(){
     else if (switchedSectionTo() === "writeEnglishWord1"){
         // Write the english word section
         switchSection(pickHeardWord, writeEnglishWord)
+        question("t1w1","question3", null, null, "english")
         markSection("t1w1","typedEnglishInput","writeEnglishWord2")
     }
     else if (switchedSectionTo() === "writeEnglishWord2"){
@@ -50,5 +51,4 @@ continueBtn.addEventListener("click", () => {
 window.addEventListener("enterKeyPressed", () => {
     continueLesson();
 });
-
 

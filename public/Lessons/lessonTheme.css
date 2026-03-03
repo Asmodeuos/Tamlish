@@ -10,7 +10,7 @@ button{
 /* HUD */
 .progressBarContainer{
     margin-top: 20px;
-    background-color: green;
+    background-color: rgb(44, 106, 253);
     width: 95%;
     height: 20px;
     border-radius: 10px;
@@ -19,7 +19,7 @@ button{
 #progressBar{
     width: 0%;
     height: 100%;
-    background-color: red;
+    background-color: rgb(18, 159, 18);
     transition: width 0.3s ease;
     border-radius: 10px;
 }
@@ -43,7 +43,7 @@ button{
     height: 200px;
 }
 .clicked{
-    border: 2px solid green;
+    border: 2px solid rgb(6, 138, 214);
 }
 .resultBox{
     position: fixed;
@@ -85,4 +85,21 @@ main{
 #messages{
     float: left;
 }
+#cancelLessonBox{
+    position: fixed;
+    bottom: -150px;
+    background-color: orange;
+    padding: 15px;
+    transition: bottom 0.3s ease;
+    width: 100%;
+    height: 150px;
+    margin-left: 0px;
+    z-index: 4;
+}
+#cancelLessonBox.notAnimated{
+    bottom: -150px; 
+}
 
+#cancelLessonBox.animated{
+    bottom: 0;      
+}
